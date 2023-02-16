@@ -1,4 +1,50 @@
-# wad
+//B8
+//index.jsp
+<a href="view.jsp?page=1">View Employees Table</a>
+
+//view.jsp
+<%@page language="java" contentType="text/html" pageEncoding="UTF-8" %>
+<%@page import="java.sql.*,javax.servlet.*,java.io.*" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Pagination in Jsp</title>
+    </head>
+    <body>
+    <center>
+        <%
+            String spageid=request.getParameter("page");
+            int pageid=Integer.parseInt(spageid);
+            int total=5;
+            if(pageid==1){}
+            else{
+                pageid=pageid-1;
+                pageid=pageid*total+1;
+            }
+            out.println("<h2>Page NO:"+pageid+"<h2>");
+            out.println("<table border='1' cellspacing='6' width='60%'");
+            out.println("<tr><th>ID</th><th>NAME</th>SALARY<th></tr>");
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/pagination?characterEncoding=utf8","root","1234");
+            Statement stmt=conn.createStatement();
+            String qry=("select * from emp limit"+(pageid -1)+","+total);
+            ResultSet rs=stmt.executeQuery(qry);
+            while(rs.next()){
+                out.println("<tr><td>"+rs.getInt(1)+"</td><td>"+rs.getString(2)+"</td><td>"+rs.getFloat(3)+"</td></tr>");
+            }
+            conn.close();
+            out.println("</table>");
+        %>
+        <br><br>
+        <a href="view.jsp?page=1">1</a>
+        <a href="view.jsp?page=2">2</a>
+        <a href="view.jsp?page=3">3</a>
+    </center>
+    </body>
+</html>
+
+
 
 //B7
 //update.java
@@ -529,8 +575,9 @@ public class insert extends HttpServlet {
         </form>
     </body>
 </html>
-    
- import java.io.IOException;
+
+//Search.java
+import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -804,3 +851,4 @@ public class CookieTest extends HttpServlet {
         <h3><p>Welcome: <%=username %></p></h3>
     </body>
 </html>
+ 
